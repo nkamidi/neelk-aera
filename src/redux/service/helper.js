@@ -12,10 +12,5 @@ export function createAxiosInstance(jwt) {
         },
     });
 
-    //TODO: Chongrui Add token later
-    // instance.interceptors.request.use(function (config) {
-    //     config.headers = {"Authorization": "Bearer " + jwt};
-    //     return config
-    // });
     return instance;
 }

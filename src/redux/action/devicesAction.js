@@ -1,13 +1,13 @@
 import * as actions from './actionTypes';
 
-export function getDevicesList() {
+export function getDeviceTypes() {
     return {
-        type: actions.GET_DEVICE_LIST
+        type: actions.GET_DEVICE_TYPES
     };
 }
 
-export function getNodes() {
+export function getDevices() {
     return {
-        type: actions.GET_NODES
+        type: actions.GET_DEVICES
     };
 }

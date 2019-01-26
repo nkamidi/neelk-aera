@@ -1,8 +1,15 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Dependencies
+### `npm start`
+
+* Install Node.js (LTS).
+
+* Run `npm install` from /neelK-vf to install all dependencies this project needs.
+
 ## Available Scripts
 
-In the project directory, you can run:
+After all the dependencies are installed via `npm install`, you can run this in the project directory to start the application:
 
 ### `npm start`
 
@@ -12,57 +19,30 @@ Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
 
-### `npm test`
+## Features of the application
+#### Data Display
+Data is read from a static file and rendered on home page in a tabular format.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+By default the data is sorted in ascending order on "Device Name" column. You can sort on "Device Type" as well.
 
-### `npm run build`
+Pagination is enabled for this table. By default it displays 10 records per page. Please see the pagination component at the bottom of the page.
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### Add a new device
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+Click on "Add New Device" button to expand the section to add a new device.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Clicking on the close icon button (X) at the top right of the "Add New Device" section will hide it.
 
-### `npm run eject`
+Both Device Name is marked as mandatory. User will see the appropriate message when user tries to submit the form without filling in.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Saving the data with a device name and device type will update the table dynamically. For testing purposes, keep the device name column sorted in ascending order and try with a device name starting with "a" to see it popup at the beginning of the list.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+There is a check to make sure the entered device name doesn't already exist. However this check only works for node_names which are already loaded (ex: bb-dallas-1) when the page is loaded for the first time.
+````
+Note: I could probably use IndexedDB to simulate reading and writing from/to backend API.
+````
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify

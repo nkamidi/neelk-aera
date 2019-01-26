@@ -15,7 +15,6 @@ export default function reducer(
 ) {
     switch (action.type) {
         case actions.SHOW_ALERT: {
-            console.log("alertReducer - SHOW_ALERT-action.payload:", action.payload);
             const {data} = action.payload;
             return {
                 ...state,
@@ -27,7 +26,6 @@ export default function reducer(
             };
         }
         case actions.HIDE_ALERT: {
-            console.log("alertReducer - HIDE_ALERT");
             return {
                 ...state,
                 variant: defaultVariant,

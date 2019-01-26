@@ -1,93 +1,118 @@
 import {call, put, takeLatest, takeEvery} from "redux-saga/effects";
-import {push} from 'connected-react-router';
 import * as actions from "../action/actionTypes";
-import expensesApi from '../service/expensesApi';
-import workoutLogApi from "../service/workoutLogApi";
-import sortData from '../../utils/sortData';
-import groupData from '../../utils/groupData';
+import devicesApi from '../service/devicesApi';
 
-function* uploadFile(data) {
-    console.log("expensesSaga-uploadFile-data:", data);
+function* getDevices() {
     try {
         yield put({
-            type: actions.UPLOAD_FILE_IN_PROGRESS
+            type: actions.GET_DEVICES_IN_PROGRESS
         });
 
-        if (data.payload.file) {
-            let _data = new FormData(), _results;
-            _data.append('file', data.payload.file);
-            _data.append('fileName', data.payload.file.name);
+        const response = yield call(devicesApi.getNodes);
 
-            const response = yield call(expensesApi.uploadFile, _data, data.payload.file.type);
-            //const response = yield call(expensesApi.uploadFile, data.payload.fileData, data.payload.file.type);
-            //console.log(response.data);
-
-            if (response.status && response.status < 400) {
-                _results = {
-                    message: response.data.message,
-                    recordCount: response.data.results && Array.isArray(response.data.results) ? response.data.results.length : 0
-                };
-
-                yield put({
-                    type: actions.UPLOAD_FILE_SUCCESSFUL,
-                    data: response.data.results,
-                    results: _results
-                });
-            } else {
-                _results = {
-                    message: response.data.message ? response.data.message : "Upload failed",
-                    recordCount: 0
-                };
-                yield put({
-                    type: actions.UPLOAD_FILE_FAILED,
-                    results: _results
-                });
-            }
-        }
-    } catch (err) {
-        console.log("uploadFile failed. Error:", err);
-        yield put({
-            type: actions.UPLOAD_FILE_FAILED
-        });
-    }
-}
-
-function* getExpensesData(payload) {
-    //console.log("expensesSaga-getExpensesData-payload:", payload);
-    try {
-        yield put({
-            type: actions.GET_EXPENSES_DATA_IN_PROGRESS
-        });
-
-        const response = yield call(expensesApi.getExpensesData, payload.timePeriod);
-        if (response.status && response.status < 400) {
-            let allData = [], categoriesGrouped = {}, accountsGrouped = {}, transactionDateGrouped = {};
-            if (response.data.expenses && Array.isArray(response.data.expenses) && response.data.expenses.length > 0) {
-                allData = sortData(response.data.expenses, 'category', false);
-                categoriesGrouped = sortData(groupData(response.data.expenses, 'category', 'amount'), 'value', false);
-                accountsGrouped = sortData(groupData(response.data.expenses, 'accountName', 'amount'), 'category', true);
-                transactionDateGrouped = sortData(groupData(response.data.expenses, 'transactionDate', 'amount'), 'category', true);
-            }
-
+        // Since this mock data I'll just check for response.data instead of checking for response.status
+        if (response && response.data) {
             yield put({
-                type: actions.GET_EXPENSES_DATA_SUCCESSFUL,
-                data: {allData, categoriesGrouped, accountsGrouped, transactionDateGrouped}
+                type: actions.GET_DEVICES_SUCCESSFUL,
+                data: response.data
             });
         } else {
             yield put({
-                type: actions.GET_EXPENSES_DATA_FAILED
+                type: actions.GET_DEVICES_FAILED
             });
         }
     } catch (err) {
-        console.log("GET_EXPENSES_DATA_FAILED. Error:", err);
+        console.log("getNodes. Error:", err);
         yield put({
-            type: actions.GET_EXPENSES_DATA_FAILED
+            type: actions.GET_DEVICES_FAILED
         });
     }
 }
 
+function* getDeviceTypes() {
+    try {
+        yield put({
+            type: actions.GET_DEVICE_TYPES_IN_PROGRESS
+        });
 
-export const expensesSaga = [
-    takeLatest(actions.UPLOAD_FILE, uploadFile),
-    takeLatest(actions.GET_EXPENSES_DATA, getExpensesData)
+        const response = yield call(devicesApi.getDevicesList);
+
+        // Since this mock data I'll just check for response.data instead of checking for response.status
+        if (response && response.data) {
+            /*const _devicesList = Object.entries(response.data).map(item => {
+                return {id: Number(item[0]), type: item[1]}
+            });*/
+
+            yield put({
+                type: actions.GET_DEVICE_TYPES_SUCCESSFUL,
+                data: response.data
+            });
+        } else {
+            yield put({
+                type: actions.GET_DEVICE_TYPES_FAILED
+            });
+        }
+    } catch (err) {
+        console.log("getDevicesTypes. Error:", err);
+        yield put({
+            type: actions.GET_DEVICE_TYPES_FAILED
+        });
+    }
+}
+
+function* AddNewDevice(payload) {
+    try {
+        yield put({
+            type: actions.ADD_NEW_DEVICE_IN_PROGRESS
+        });
+
+        const response = yield call(devicesApi.addNewDevice, payload.data);
+
+        // Since this mock data I'll just check for response.data instead of checking for response.status
+        if (response.status && response.status === 'success') {
+            yield [put({
+                type: actions.ADD_NEW_DEVICE_SUCCESSFUL,
+                data: payload.data
+            }),
+                put({
+                    type: actions.SHOW_ALERT,
+                    payload: {
+                        data: {
+                            variant: 'info',
+                            show: true,
+                            message: 'Device was added successfully',
+                            autoClose: false,
+                            dismissible: true
+                        },
+                    },
+                })];
+        } else {
+            yield [put({
+                type: actions.ADD_NEW_DEVICE_FAILED
+            }),
+                put({
+                    type: actions.SHOW_ALERT,
+                    payload: {
+                        data: {
+                            variant: 'danger',
+                            show: true,
+                            message: `Device could not be added. Error: ${response.message}`,
+                            autoClose: false,
+                            dismissible: true
+                        },
+                    },
+                })];
+        }
+    } catch (err) {
+        console.log("AddNewDevice. Error:", err);
+        yield put({
+            type: actions.ADD_NEW_DEVICE_FAILED
+        });
+    }
+}
+
+export const devicesSaga = [
+    takeLatest(actions.GET_DEVICES, getDevices),
+    takeLatest(actions.GET_DEVICE_TYPES, getDeviceTypes),
+    takeEvery(actions.ADD_NEW_DEVICE, AddNewDevice)
 ];

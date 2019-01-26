@@ -1,52 +1,53 @@
+import createRandomString from '../../utils/createRandomString';
+
 export default function reducer(
     state = {
         requestInProgress: false,
-        devicesList: [],
-        nodes: [],
-        activeRecord: {},
-        nextIdValue: 200
+        deviceTypes: [],
+        devices: [],
+        activeRecord: {}
     },
     action,
 ) {
     switch (action.type) {
-        case 'GET_NODES_IN_PROGRESS': {
+        case 'GET_DEVICES_IN_PROGRESS': {
             return {
                 ...state,
                 requestInProgress: true,
             };
         }
-        case 'GET_NODES_SUCCESSFUL': {
+        case 'GET_DEVICES_SUCCESSFUL': {
             return {
                 ...state,
                 requestInProgress: false,
-                nodes: action.data,
+                devices: action.data,
             };
         }
-        case 'GET_NODES_FAILED': {
+        case 'GET_DEVICES_FAILED': {
             return {
                 ...state,
                 requestInProgress: false,
-                nodes: []
+                devices: []
             };
         }
-        case 'GET_DEVICE_LIST_IN_PROGRESS': {
+        case 'GET_DEVICE_TYPES_IN_PROGRESS': {
             return {
                 ...state,
                 requestInProgress: true,
             };
         }
-        case 'GET_DEVICE_LIST_SUCCESSFUL': {
+        case 'GET_DEVICE_TYPES_SUCCESSFUL': {
             return {
                 ...state,
                 requestInProgress: false,
-                devicesList: action.data,
+                deviceTypes: action.data,
             };
         }
-        case 'GET_DEVICE_LIST_FAILED': {
+        case 'GET_DEVICE_TYPES_FAILED': {
             return {
                 ...state,
                 requestInProgress: false,
-                devicesList: []
+                deviceTypes: []
             };
         }
         case 'ADD_NEW_DEVICE_IN_PROGRESS': {
@@ -56,16 +57,21 @@ export default function reducer(
             };
         }
         case 'ADD_NEW_DEVICE_SUCCESSFUL': {
-            let _newDevicesList = [].concat(state.devicesList);
+            let _newDevices = [].concat(state.devices.TopologyNodes);
 
             // pushing the entry to global store to avoid web service call
-            _newDevicesList.push({id: state.nextIdValue, type: action.data.deviceType});
+            _newDevices.push({
+                device_id: createRandomString(),
+                node_id: createRandomString(),
+                node_name: action.data.deviceName,
+                parent_id: createRandomString(),
+                type: action.data.deviceType
+            });
 
             return {
                 ...state,
                 requestInProgress: false,
-                devicesList: _newDevicesList,
-                nextIdValue: state.nextIdValue + 1
+                devices: {TopologyNodes: _newDevices}
             };
         }
         case 'ADD_NEW_DEVICE_FAILED': {

@@ -36,7 +36,7 @@ class AddEditDevice extends React.Component {
             formValidated: false,
             data: {
                 deviceName: '',
-                deviceType: ''
+                deviceType: 0
             }
         };
     }
@@ -62,8 +62,6 @@ class AddEditDevice extends React.Component {
     handleChange = e => {
         this.setState({
             data: {...this.state.data, [e.target.name]: e.target.value.trim()}
-        }, () => {
-            console.log("handleChange-state:", this.state.data);
         });
     };
 
@@ -84,13 +82,11 @@ class AddEditDevice extends React.Component {
         const {classes, requestInProgress, onClose} = this.props;
         const {formValidated} = this.state;
 
-       // console.log("AddEditNode-render", this.props);
         return (
             <Container className={classes.viewContainer}>
                 <Row style={{
                     minHeight: '200px',
-                    height: 'auto !important',
-                    border: '0px solid green'
+                    height: 'auto !important'
                 }}>
                     <Col lg={1}></Col>
                     <Col lg={10} style={{border: '0px solid red'}}>
@@ -117,14 +113,11 @@ class AddEditDevice extends React.Component {
 
                                     <Form.Group as={Col} controlId="deviceType">
                                         <Form.Label className={classes.fieldLabel}>Device Type*</Form.Label>
-                                        {/*<Form.Control type="text" name="deviceType" placeholder=""
-                                                      onChange={this.handleChange} required/>*/}
-
                                         <Form.Control as="select" name="deviceType" onChange={this.handleChange}
                                                       required>
                                             {
-                                                this.props.deviceTypes.map((device, key) => {
-                                                    return <option key={key} id={device.id}>{device.type}</option>
+                                                Object.entries(this.props.deviceTypes).map((deviceType, key) => {
+                                                    return <option key={key} value={deviceType[0]}>{deviceType[1]}</option>
                                                 })
                                             }
                                         </Form.Control>

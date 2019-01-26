@@ -1,32 +1,44 @@
 import {createAxiosInstance} from './helper';
 import api from './api';
 
-let expensesApi = {
-    uploadFile(data, fileType) {
-        //console.log("expensesApi-uploadFile-data:", data);
-        let instance = createAxiosInstance('');
+import data from '../../utils/deviceTypes';
+import nodes from '../../utils/nodes';
+
+let devicesApi = {
+    getNodes() {
+        return {data: nodes};
+        /*let instance = createAxiosInstance('');
         const authToken = sessionStorage.getItem('authToken');
 
-        return instance.post(`${api.ROOT_URL}/expense-manager/upload-file-2`, data, {
+        return instance.get(`${api.ROOT_URL}/device-manager/list`, {
             headers: {
                 'Authorization': `Token ${authToken}`,
                 'Content-Type': 'text/plain'
             }
-        });
+        });*/
     },
-    getExpensesData(timePeriod) {
-        //console.log("expensesApi-getExpensesData-data:", timePeriod);
-        let instance = createAxiosInstance('');
+    getDevicesList() {
+        return {data: data.deviceTypes};
+        /*let instance = createAxiosInstance('');
         const authToken = sessionStorage.getItem('authToken');
 
-        return instance.get(`${api.ROOT_URL}/expense-manager/list?timePeriod=${timePeriod}`, {
+        return instance.get(`${api.ROOT_URL}/device-manager/list`, {
             headers: {
                 'Authorization': `Token ${authToken}`,
                 'Content-Type': 'text/plain'
             }
-        });
-    }
+        });*/
+    },
+    addNewDevice(deviceData) {
+        // Here we are checking for duplicate entry. This works only for first time since the data read here is not dynamically refreshed.
 
+        // Creating a mock response for web service call
+        if (nodes.TopologyNodes.findIndex(device => device['node_name'].toLowerCase() === deviceData['deviceName'].trim().toLowerCase()) < 0) {
+            return {status: 'success'};
+        } else {
+            return {status: 'fail', message: 'Device with same name already exists'}
+        }
+    }
 };
 
-export default expensesApi;
+export default devicesApi;

@@ -14,12 +14,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 import {Container, Row, Col, Button, Collapse} from 'react-bootstrap';
 
-import {getDevicesList, getNodes} from '../../redux/action/nodesAction';
+import {getDeviceTypes, getDevices} from '../../redux/action/devicesAction';
 import AddEditDevice from './AddEditDevice/AddEditDevice';
 
-import devicesStyles from './nodesStyles';
+import devicesStyles from './devicesStyles';
 
-const tableHeaderTitles = [{id: "node_name", label: "Node Name", numeric: false}, {
+const tableHeaderTitles = [{id: "node_name", label: "Device Name", numeric: false}, {
     id: "type",
     label: "Device Type",
     numeric: false
@@ -97,22 +97,22 @@ class TableHeader extends React.Component {
 }
 
 const mapStateToProps = ({devicesReducer}) => {
-    const {requestInProgress, devicesList, nodes} = devicesReducer;
+    const {requestInProgress, deviceTypes, devices} = devicesReducer;
 
     return {
         requestInProgress,
-        devicesList,
-        nodes
+        deviceTypes,
+        devices
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        getNodesList: () => {
-            dispatch(getNodes());
+        getDevices: () => {
+            dispatch(getDevices());
         },
-        getDevicesList: () => {
-            dispatch(getDevicesList());
+        getDeviceTypes: () => {
+            dispatch(getDeviceTypes());
         },
         hideAlert: () => {
             dispatch({type: 'HIDE_ALERT'});
@@ -129,13 +129,13 @@ class Devices extends React.Component {
             orderBy: 'node_name',
             page: 0,
             rowsPerPage: 10,
-            showAddNode: true
+            showAddNode: false
         };
     }
 
     componentDidMount() {
-        this.props.getNodesList();
-        this.props.getDevicesList();
+        this.props.getDeviceTypes();
+        this.props.getDevices();
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -181,11 +181,11 @@ class Devices extends React.Component {
     }
 
     deviceTypeName(type) {
-        return this.props.devicesList[type] ? this.props.devicesList[type].type : 'Unknown';
+        return this.props.deviceTypes[type] ? this.props.deviceTypes[type] : 'Unknown';
     }
 
     render() {
-        const {classes, requestInProgress, devicesList, nodes} = this.props;
+        const {classes, requestInProgress, deviceTypes, devices} = this.props;
         const {order, orderBy, rowsPerPage, page} = this.state;
 
         return (
@@ -195,14 +195,14 @@ class Devices extends React.Component {
                         <Fragment>
                             <Row>
                                 <Col>
-                                    <h2>Nodes List</h2>
+                                    <h2>Devices</h2>
                                 </Col>
                             </Row>
                             <Row style={{height: '30px', marginBottom: '20px'}}>
                                 <Col>
                                     <div style={{float: 'right'}}><Button size="sm" onClick={() => {
                                         this.toggleAddNewNode()
-                                    }}>{this.state.showAddNode ? 'Hide' : 'Add New Node'}</Button></div>
+                                    }}>{this.state.showAddNode ? 'Hide' : 'Add New Device'}</Button></div>
                                 </Col>
                             </Row>
                         </Fragment>
@@ -212,7 +212,7 @@ class Devices extends React.Component {
                     !!this.state.showAddNode ?
                         <Row className={classes.addEditDiv}>
                             <Col>
-                                <AddEditDevice deviceTypes={devicesList} onClose={(e) => this.toggleAddNewNode(e)}/>
+                                <AddEditDevice deviceTypes={deviceTypes} onClose={(e) => this.toggleAddNewNode(e)}/>
                             </Col>
                         </Row> : (null)
                 }
@@ -221,7 +221,7 @@ class Devices extends React.Component {
                     <Col>
                         <Paper className={classes.root}>
                             {
-                                nodes.TopologyNodes && Array.isArray(nodes.TopologyNodes) && nodes.TopologyNodes.length > 0 ?
+                                devices.TopologyNodes && Array.isArray(devices.TopologyNodes) && devices.TopologyNodes.length > 0 ?
                                     (
                                         <Fragment>
                                             <div>
@@ -230,12 +230,12 @@ class Devices extends React.Component {
                                                         onRequestSort={this.handleRequestSort}
                                                         order={order}
                                                         orderBy={orderBy}
-                                                        rowCount={devicesList.length}
+                                                        rowCount={devices.TopologyNodes.length}
                                                     />
                                                     <TableBody>
                                                         {
-                                                            nodes.TopologyNodes ? (
-                                                                stableSort(nodes.TopologyNodes, getSorting(order, orderBy))
+                                                            devices.TopologyNodes ? (
+                                                                stableSort(devices.TopologyNodes, getSorting(order, orderBy))
                                                                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                                                                     .map((node, index) => {
                                                                         return <TableRow key={index}>
@@ -254,7 +254,7 @@ class Devices extends React.Component {
                                             <TablePagination
                                                 rowsPerPageOptions={[5, 10, 25]}
                                                 component="div"
-                                                count={nodes.TopologyNodes && Array.isArray(nodes.TopologyNodes) ? nodes.TopologyNodes.length : 0}
+                                                count={devices.TopologyNodes && Array.isArray(devices.TopologyNodes) ? devices.TopologyNodes.length : 0}
                                                 rowsPerPage={rowsPerPage}
                                                 page={page}
                                                 backIconButtonProps={{
