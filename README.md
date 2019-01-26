@@ -13,8 +13,8 @@ After all the dependencies are installed via `npm install`, you can run this in 
 
 ### `npm start`
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Runs the app in the development mode and automatically opens a new browser tab at [http://localhost:3000](http://localhost:3000).<br>
+If the port `3000` is used by some other application you may see a message prompting to use another port.
 
 The page will reload if you make edits.<br>
 You will also see any lint errors in the console.
@@ -33,11 +33,11 @@ Click on "Add New Device" button to expand the section to add a new device.
 
 Clicking on the close icon button (X) at the top right of the "Add New Device" section will hide it.
 
-Both Device Name is marked as mandatory. User will see the appropriate message when user tries to submit the form without filling in.
+Device Name is marked as mandatory and Device Type is pre-selected at first entry (value = 0). User will see the appropriate message when user tries to submit the form without filling in.
 
 Saving the data with a device name and device type will update the table dynamically. For testing purposes, keep the device name column sorted in ascending order and try with a device name starting with "a" to see it popup at the beginning of the list.
 
-There is a check to make sure the entered device name doesn't already exist. However this check only works for node_names which are already loaded (ex: bb-dallas-1) when the page is loaded for the first time.
+There is a check to make sure the entered device name does not already exist. However this check only works for node_names which are already loaded (ex: bb-dallas-1) when the page is loaded for the first time.
 ````
 Note: I could probably use IndexedDB to simulate reading and writing from/to backend API.
 ````
