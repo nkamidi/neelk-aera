@@ -1,12 +1,6 @@
 import {combineReducers} from 'redux';
-import modalReducer from './modalReducer';
-import devicesReducer from './devicesReducer';
-import notificationReducer from './notificationReducer';
-import alertReducer from './alertReducer';
+import booksReducer from './booksReducer';
 
 export default combineReducers({
-    modalReducer,
-    notificationReducer,
-    alertReducer,
-    devicesReducer
+    booksReducer
 });

@@ -2,14 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import store, {history} from './redux/store';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.js';
 import './index.css';
 import App from './Components/App/App';
 import * as serviceWorker from './serviceWorker';
 import {ConnectedRouter} from 'connected-react-router';
-
-//ReactDOM.render(<App />, document.getElementById('root'));
 
 ReactDOM.render(
     <Provider store={store}>

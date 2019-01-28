@@ -1,19 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
+import {withStyles} from '@material-ui/core/styles';
 import navBarStyles from './navbarStyles';
 
 function NavBar(props) {
-    const { classes } = props;
+    const {classes} = props;
     return (
         <div className={classes.root}>
-            <AppBar position="static">
-                <Toolbar className={classes.toolBar}>
-                    <span className={classes.brandName}>Device Manager</span>
-                </Toolbar>
-            </AppBar>
+            <div className={classes.navbar}>
+                <div className={classes.bar}>
+                    <span className={classes.brandName}>NY Times Books - Top Sellers</span>
+                </div>
+            </div>
         </div>
     );
 }

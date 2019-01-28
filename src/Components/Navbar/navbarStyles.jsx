@@ -5,14 +5,23 @@ export default {
     grow: {
         flexGrow: 1,
     },
-    menuButton: {
-        marginLeft: -12,
-        marginRight: 20,
+    navbar: {
+        background: '#2663ee',
+        height: '70px',
+        width: '100%',
     },
-    toolBar: {
-        backgroundColor: '#2663ee'
+    bar: {
+        display: 'table-cell',
+        verticalAlign: 'middle',
+        height: '70px',
+        textAlign: 'center'
     },
     brandName: {
-        fontWeight: 600
+        display: 'inline-block',
+        color: '#eeeeee',
+        fontWeight: 600,
+        fontSize: '22px',
+        float: 'left',
+        paddingLeft: '20px',
     }
 };

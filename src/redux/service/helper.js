@@ -5,7 +5,7 @@ export let instance;
 
 export function createAxiosInstance(jwt) {
     instance = axios.create({
-        baseURL: api.ROOT_URL,
+        baseURL: api.BOOKS_LIST_URL,
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
