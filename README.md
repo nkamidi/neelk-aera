@@ -34,7 +34,7 @@ You will also see any lint errors in the console.
 * Clicking on a card will make the details overlay appear which will have more details about the book.
 * To close the overlay card click anywhere on the viewport.
 
-
+##`I can think of one other mode to display the data on home, which we can discuss later. :-)` 
 
 
 
