@@ -51,13 +51,10 @@ class BookDetails extends React.Component {
         };
     }
 
-    closeDiv() {
-        this.props.hideBookDetails();
-
-        /*this.setState({
-            showBookDetails: false,
-            activeBook: {}
-        });*/
+    closeDiv(e) {
+        if (e.target.id && (e.target.id === 'overlay-background' || e.target.id === 'close-button')) {
+            this.props.hideBookDetails();
+        }
     }
 
     render() {
@@ -66,11 +63,11 @@ class BookDetails extends React.Component {
 
         if (!!showBookDetails) {
             return (
-                <div className="overlay" onClick={(e) => this.closeDiv(e)}>
+                <div className="overlay" id="overlay-background" onClick={(e) => this.closeDiv(e)}>
                     <div className="overlay-content">
                         <div className={classes.booksHeader}>
                             {activeBook.title}
-                            <span className={classes.closeButton}><a onClick={(e) => this.closeDiv(e)}>close</a></span>
+                            <span className={classes.closeButton}><a id="close-button" onClick={(e) => this.closeDiv(e)}>close</a></span>
                         </div>
 
                         <div className={classes.bodyDiv}>
