@@ -27,7 +27,8 @@ export default theme => ({
         height: '100%',
         textAlign: 'left',
         verticalAlign: 'top',
-        paddingLeft: '15px'
+        padding: '0 15px',
+        overFlowX: 'auto'
     },
     booksHeader: {
         borderBottom: '1px solid #dddddd',

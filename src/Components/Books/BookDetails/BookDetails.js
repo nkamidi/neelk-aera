@@ -116,9 +116,8 @@ class BookDetails extends React.Component {
                                                 {
                                                     activeBook.buy_links.map((link, index) => {
                                                         return (
-                                                            <div key={index} style={{marginTop: '10px'}}>{link.name}: <a
-
-                                                                href={link.url}>{link.url}</a></div>)
+                                                            <div key={index} style={{marginTop: '10px', paddingLeft: '30px'}}><a
+                                                                href={link.url} style={{wordWrap: 'break-word'}}>{link.name}</a></div>)
                                                     })
                                                 }
                                             </div>
@@ -126,8 +125,8 @@ class BookDetails extends React.Component {
                                         : (null)
                                 }
                             </div>
-
                         </div>
+                        <div style={{height: '30px'}}>&nbsp;</div>
                     </div>
 
                 </div>
